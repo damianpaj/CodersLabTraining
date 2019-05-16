@@ -76,7 +76,7 @@ public class HomeWork
         roleDropDown.selectByVisibleText("Manager");
         jobDropDown.selectByVisibleText("High salary");
         driver.findElement(By.xpath("//label[text()='Read books']")).click();
-        comment.sendKeys("This is comment");
+        comment.sendKeys("This is changes");
         firstName.sendKeys("");
 
         //submit
