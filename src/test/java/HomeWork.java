@@ -14,9 +14,9 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeWork
-{
+public class HomeWork {
 
+    private static final String NAME = "name";
     private WebDriver driver;
 
     @Before
@@ -27,6 +27,7 @@ public class HomeWork
 
 
     }
+
     @After
 
     public void tearDown() {
@@ -36,47 +37,59 @@ public class HomeWork
 
 
     @Test
-    public void testFirstName()  throws FileNotFoundException
-    {
+    public void testFirstName() throws FileNotFoundException {
         driver.get("https://katalon-test.s3.amazonaws.com/demo-aut/dist/html/form.html");
-        int counter=1;
+        int counter = 1;
         // Read file
         File file = new File("firstName.txt");
         Scanner read = new Scanner(file);
 
         // Find elements
         WebElement firstName = driver.findElement(By.id("first-name"));
+        String firstNameAttribute = firstName.getAttribute(NAME);
         WebElement lastName = driver.findElement(By.id("last-name"));
+        String lastNameAttribute = lastName.getAttribute(NAME);
         List<WebElement> elementsGender = driver.findElements(By.cssSelector(".radio-inline"));
         WebElement dateOfBirth = driver.findElement(By.id("dob"));
+        String dobAttribute = dateOfBirth.getAttribute(NAME);
         WebElement address = driver.findElement(By.id("address"));
+        String addressAttribute = address.getAttribute(NAME);
         WebElement email = driver.findElement(By.id("email"));
+        String emailAttribute = email.getAttribute(NAME);
         WebElement password = driver.findElement(By.id("password"));
+        String passwordAttribute = password.getAttribute(NAME);
         WebElement company = driver.findElement(By.id("company"));
+        String companyAttribute = company.getAttribute(NAME);
         Select roleDropDown = new Select(driver.findElement(By.name("role")));
         Select jobDropDown = new Select(driver.findElement(By.name("expectation")));
         WebElement comment = driver.findElement(By.id("comment"));
+        String commentAttribute = comment.getAttribute(NAME);
 
         // Start fill Form
-        lastName.sendKeys("Kowalski");
-        for (WebElement element : elementsGender)
-        {
-            if (element.getText().equals("Female"))
-            {
+        String lastNameInput = "Kowalski";
+        workWithWebElement(lastName, lastNameAttribute, lastNameInput);
+        for (WebElement element : elementsGender) {
+            if (element.getText().equals("Female")) {
                 element.click();
                 break;
             }
         }
-        dateOfBirth.sendKeys("02/10/1995");
+        String dateOfBirthInput ="02/10/1995";
+        workWithWebElement(dateOfBirth , dobAttribute, dateOfBirthInput);
         driver.findElement(By.id("address")).click();
-        address.sendKeys("Cracow 35/17");
-        email.sendKeys("test@gmail.com");
-        password.sendKeys("hasl0123");
-        company.sendKeys("CodersLab");
+        String addressInput = "Cracow 35/17";
+        workWithWebElement(address, addressAttribute, addressInput);
+        String emailInput = "test@gmail.com";
+        workWithWebElement(email, emailAttribute, emailInput);
+        String passwordInput = "pass123";
+        workWithWebElement(password, passwordAttribute, passwordInput);
+        String companyInput = "CodersLab";
+        workWithWebElement(company, companyAttribute, companyInput);
         roleDropDown.selectByVisibleText("Manager");
         jobDropDown.selectByVisibleText("High salary");
         driver.findElement(By.xpath("//label[text()='Read books']")).click();
-        comment.sendKeys("This is changes");
+        String commentInput = "This is comment";
+        workWithWebElement(comment, commentAttribute, commentInput);
         firstName.sendKeys("");
 
         //submit
@@ -129,6 +142,13 @@ public class HomeWork
         listId.add("password");
         listId.add("company");
         return listId;
+    }
+
+    private void workWithWebElement(WebElement webElement, String name, String inputValue) {
+        if (webElement.isEnabled()) {
+            webElement.sendKeys(inputValue);
+            System.out.println(name + ": " + inputValue);
+        }
     }
 }
 
